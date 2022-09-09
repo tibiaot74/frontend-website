@@ -13,6 +13,17 @@ interface ICreateAccount {
   password: string;
 }
 
+export async function login(data: ILogin) {
+  const response = await axios.post(`${hostname}/api/token`, data);
+
+  return await response;
+}
+
+interface ILogin {
+  name: string;
+  password: string;
+}
+
 export default function authHeader() {
   const user = JSON.parse(localStorage.getItem("user") || "");
   if (user && user.accessToken) {
