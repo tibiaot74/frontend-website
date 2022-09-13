@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { createAccount } from "../../services/Auth";
+import { useNavigate } from "react-router-dom";
+import { logUser } from "../LoginForm/helper";
 
 const ContainerDiv = styled("div")({
   backgroundColor: "#292e38",
@@ -94,18 +96,26 @@ const Loading = styled(CircularProgress)({
 });
 
 function CreateAccountForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const submit = (data: { email: string; name: string; password: string }) => {
+  const submit = (data: { email: string; name: number; password: string }) => {
     setLoading(true);
     createAccount(data)
       .then((response) => {
         setLoading(false);
-        console.log("SUCESSO");
+        logUser({
+          data: { name: data.name, password: data.password },
+          onSuccess: () => {
+            navigate("/");
+            window.location.reload();
+          },
+          onFail: () => {},
+        });
       })
       .catch((error) => {
         setLoading(false);
@@ -123,10 +133,13 @@ function CreateAccountForm() {
         />
       </InputDiv>
       <InputDiv>
-        <InputText>Usuário:</InputText>
+        <InputText>Conta: </InputText>
         <FormInput
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          placeholder={"Apenas números"}
+          onChange={(event) =>
+            setName(event.target.value.replace(/[^0-9]+/, ""))
+          }
         />
       </InputDiv>
       <InputDiv>
@@ -141,7 +154,10 @@ function CreateAccountForm() {
       <ButtonDiv>
         <FormButton
           disabled={loading}
-          onClick={() => submit({ email, name, password })}
+          onClick={() => {
+            const numberedName = parseInt(name);
+            submit({ email: email, name: numberedName, password: password });
+          }}
         >
           {loading ? <Loading size={24} /> : "Criar"}
         </FormButton>

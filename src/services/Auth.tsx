@@ -1,33 +1,50 @@
 import { hostname } from "./config";
-import axios from "axios";
-
-export async function createAccount(data: ICreateAccount) {
-  const response = await axios.post(`${hostname}/api/account`, data);
-
-  return await response;
-}
+import axios, { AxiosRequestConfig } from "axios";
+import UserSession from "./UserSession";
 
 interface ICreateAccount {
-  name: string;
+  name: number;
   email: string;
   password: string;
 }
 
-export async function login(data: ILogin) {
-  const response = await axios.post(`${hostname}/api/token`, data);
+interface ICreateAccountResponse {
+  email: string;
+  id: number;
+  name: string;
+}
+
+export async function createAccount(data: ICreateAccount) {
+  const response = await axios.post<ICreateAccountResponse>(
+    `${hostname}/api/account`,
+    data
+  );
 
   return await response;
 }
 
 interface ILogin {
-  name: string;
+  name: number;
   password: string;
 }
 
-export default function authHeader() {
-  const user = JSON.parse(localStorage.getItem("user") || "");
-  if (user && user.accessToken) {
-    return { authentication: user.accessToken };
+interface ILoginResponse {
+  token: string;
+}
+
+export async function login(data: ILogin) {
+  const response = await axios.post<ILoginResponse>(
+    `${hostname}/api/login`,
+    data
+  );
+
+  return await response;
+}
+
+export function authHeader(): AxiosRequestConfig {
+  const user = UserSession.getToken() || "";
+  if (user) {
+    return { headers: { authentication: user } };
   } else {
     return {};
   }

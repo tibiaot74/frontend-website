@@ -25,7 +25,7 @@ const BodyDiv = styled("div")({
 });
 
 const Body = styled("span")({
-  color: "#9219ad",
+  color: "#7c0bbd",
   fontSize: 24,
 });
 

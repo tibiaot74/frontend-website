@@ -3,7 +3,8 @@ import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
-import { login } from "../../services/Auth";
+import { useNavigate } from "react-router-dom";
+import { logUser } from "./helper";
 
 const ContainerDiv = styled("div")({
   backgroundColor: "#292e38",
@@ -94,28 +95,31 @@ const Loading = styled(CircularProgress)({
 });
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const submit = (data: { name: string; password: string }) => {
+  const submit = (data: { name: number; password: string }) => {
     setLoading(true);
-    login(data)
-      .then((response) => {
+    logUser({
+      data: data,
+      onSuccess: () => {
         setLoading(false);
-        console.log("SUCESSO");
-      })
-      .catch((error) => {
+        navigate("/");
+      },
+      onFail: () => {
         setLoading(false);
-      });
+      },
+    });
   };
 
   return (
     <ContainerDiv>
       <Title>Login</Title>
       <InputDiv>
-        <InputText>Usuário:</InputText>
+        <InputText>Conta:</InputText>
         <FormInput
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -133,7 +137,10 @@ function LoginForm() {
       <ButtonDiv>
         <FormButton
           disabled={loading}
-          onClick={() => submit({ name, password })}
+          onClick={() => {
+            const numberedName = parseInt(name);
+            submit({ name: numberedName, password: password });
+          }}
         >
           {loading ? <Loading size={24} /> : "Login"}
         </FormButton>

@@ -1,6 +1,7 @@
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo_tibia.png";
+import { mainNavigationOptions } from "./helper";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -15,7 +16,8 @@ const ContainerDiv = styled("div")({
 const InnerDiv = styled("div")({
   display: "flex",
   justifyContent: "space-between",
-  width: "60%",
+  maxWidth: 1080,
+  width: "100%",
 });
 
 const LogoDiv = styled("div")({
@@ -40,11 +42,6 @@ const Divider = styled(Title)({
   marginRight: 30,
 });
 
-const options = [
-  { name: "Login", url: "/login" },
-  { name: "Criar Conta", url: "/criar-conta" },
-];
-
 function MainNavBar() {
   return (
     <ContainerDiv>
@@ -61,7 +58,7 @@ function MainNavBar() {
         </LogoDiv>
 
         <NavDiv>
-          {options.map((option, i) => (
+          {mainNavigationOptions.map((option, i) => (
             <Link to={option.url}>
               <Title>{option.name}</Title>
               {i !== 0 && <Divider>·</Divider>}
