@@ -111,8 +111,7 @@ function CreateAccountForm() {
         logUser({
           data: { name: data.name, password: data.password },
           onSuccess: () => {
-            navigate("/");
-            window.location.reload();
+            navigate("/", { replace: true });
           },
           onFail: () => {},
         });

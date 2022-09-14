@@ -1,1 +1,1 @@
-export const hostname = "http://lipyt.ddns.net:7474";
+export const hostname = "http://localhost:7474";

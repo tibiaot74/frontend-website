@@ -1,7 +1,8 @@
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo_tibia.png";
-import { mainNavigationOptions } from "./helper";
+import UserSession from "../../services/UserSession";
+import { authenticatedList, unauhenticatedList } from "./helper";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -43,6 +44,12 @@ const Divider = styled(Title)({
 });
 
 function MainNavBar() {
+  console.log(UserSession.isLogged());
+
+  const mainNavigationOptions = UserSession.isLogged()
+    ? authenticatedList
+    : unauhenticatedList;
+
   return (
     <ContainerDiv>
       <InnerDiv>
