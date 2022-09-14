@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "./helper";
 
-const ContainerDiv = styled("div")({
+const ContainerDiv = styled("form")({
   backgroundColor: "#292e38",
   width: "80%",
   borderRadius: 5,
@@ -116,7 +116,13 @@ function LoginForm() {
   };
 
   return (
-    <ContainerDiv>
+    <ContainerDiv
+      onSubmit={(e) => {
+        e.preventDefault();
+        const numberedName = parseInt(name);
+        submit({ name: numberedName, password: password });
+      }}
+    >
       <Title>Login</Title>
       <InputDiv>
         <InputText>Conta:</InputText>
@@ -135,13 +141,7 @@ function LoginForm() {
       </InputDiv>
 
       <ButtonDiv>
-        <FormButton
-          disabled={loading}
-          onClick={() => {
-            const numberedName = parseInt(name);
-            submit({ name: numberedName, password: password });
-          }}
-        >
+        <FormButton disabled={loading} type="submit">
           {loading ? <Loading size={24} /> : "Login"}
         </FormButton>
       </ButtonDiv>

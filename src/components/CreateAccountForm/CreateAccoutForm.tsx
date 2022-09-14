@@ -7,7 +7,7 @@ import { createAccount } from "../../services/Auth";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "../LoginForm/helper";
 
-const ContainerDiv = styled("div")({
+const ContainerDiv = styled("form")({
   backgroundColor: "#292e38",
   width: "80%",
   borderRadius: 5,
@@ -122,7 +122,13 @@ function CreateAccountForm() {
   };
 
   return (
-    <ContainerDiv>
+    <ContainerDiv
+      onSubmit={(e) => {
+        e.preventDefault();
+        const numberedName = parseInt(name);
+        submit({ email: email, name: numberedName, password: password });
+      }}
+    >
       <Title>Crie sua conta</Title>
       <InputDiv>
         <InputText>Email:</InputText>
@@ -151,13 +157,7 @@ function CreateAccountForm() {
       </InputDiv>
 
       <ButtonDiv>
-        <FormButton
-          disabled={loading}
-          onClick={() => {
-            const numberedName = parseInt(name);
-            submit({ email: email, name: numberedName, password: password });
-          }}
-        >
+        <FormButton disabled={loading} type="submit">
           {loading ? <Loading size={24} /> : "Criar"}
         </FormButton>
       </ButtonDiv>
