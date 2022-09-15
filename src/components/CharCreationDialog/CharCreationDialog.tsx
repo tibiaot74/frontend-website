@@ -1,6 +1,7 @@
 import {
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogContent,
   FormControlLabel,
@@ -44,6 +45,10 @@ const CheckboxForm = styled(FormControlLabel)({
   ".MuiFormControlLabel-label": {
     fontFamily: "AncientModernTales-a7Po",
   },
+});
+
+const Loading = styled(CircularProgress)({
+  color: "white",
 });
 
 const CharDisplay = styled("div")({
@@ -203,6 +208,7 @@ function CharCreationDialog({
               <StyledRadioGroup>
                 {creationOutfitOptions.map((o) => (
                   <StyledFormControlLabel
+                    key={o}
                     value={o.toLowerCase()}
                     control={<BpRadio />}
                     label={o}
@@ -242,7 +248,9 @@ function CharCreationDialog({
               />
             </CharContainer>
           </ContainerDiv>
-          <NewCharButton>Criar</NewCharButton>
+          <NewCharButton type="submit" disabled={loading}>
+            {loading ? <Loading size={24} /> : "Criar"}
+          </NewCharButton>
         </FormDiv>
       </DialogContent>
     </Dialog>

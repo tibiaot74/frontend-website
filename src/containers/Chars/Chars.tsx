@@ -166,9 +166,9 @@ function Chars() {
           <CharSectionDiv>
             {chars
               .filter((char) => char.name.includes(searchText))
-              .map((char) => {
+              .map((char, i) => {
                 return (
-                  <CharContainer>
+                  <CharContainer key={`${char.name}-${i}`}>
                     {loading ? (
                       <Skeleton
                         variant="rectangular"

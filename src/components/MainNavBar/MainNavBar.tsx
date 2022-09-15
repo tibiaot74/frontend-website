@@ -44,8 +44,6 @@ const Divider = styled(Title)({
 });
 
 function MainNavBar() {
-  console.log(UserSession.isLogged());
-
   const mainNavigationOptions = UserSession.isLogged()
     ? authenticatedList
     : unauhenticatedList;
@@ -66,7 +64,7 @@ function MainNavBar() {
 
         <NavDiv>
           {mainNavigationOptions.map((option, i) => (
-            <Link to={option.url}>
+            <Link key={`link-${i}`} to={option.url}>
               <Title>{option.name}</Title>
               {i !== 0 && <Divider>·</Divider>}
             </Link>
