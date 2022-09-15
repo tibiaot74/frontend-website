@@ -109,7 +109,7 @@ function Chars() {
     useState<
       Array<{ name: string; sex: boolean; level: number; outfit: string }>
     >(defaultChars);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -123,6 +123,30 @@ function Chars() {
         setLoading(false);
       });
   }, []);
+
+  const createNewChar = (data: {
+    name: string;
+    sex: boolean;
+    outfit: string;
+  }) => {
+    setCharCreationLoading(true);
+    createChar(data)
+      .then((response) => {
+        setCharCreationLoading(false);
+        setChars([
+          ...chars,
+          {
+            name: response.data.name,
+            sex: response.data.sex,
+            outfit: response.data.outfit,
+            level: 0,
+          },
+        ]);
+      })
+      .catch((err) => {
+        setCharCreationLoading(true);
+      });
+  };
 
   const [searchText, setSearchText] = useState("");
   const [charCreationLoading, setCharCreationLoading] = useState(false);
@@ -138,21 +162,6 @@ function Chars() {
 
   const dialogOpen = () => {
     setCharCreationDialogOpen(true);
-  };
-
-  const createNewChar = (data: {
-    name: string;
-    sex: boolean;
-    outfit: string;
-  }) => {
-    setCharCreationLoading(true);
-    createChar(data)
-      .then((response) => {
-        setCharCreationLoading(false);
-      })
-      .catch((err) => {
-        setCharCreationLoading(true);
-      });
   };
 
   return (
