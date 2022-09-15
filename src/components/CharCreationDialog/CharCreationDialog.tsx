@@ -198,7 +198,8 @@ function CharCreationDialog({
     <Dialog open={open} onClose={onClose}>
       <DialogContent>
         <FormDiv
-          onSubmit={() => {
+          onSubmit={(e) => {
+            e.preventDefault();
             submit({ name, sex, outfit });
           }}
         >

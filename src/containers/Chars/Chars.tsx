@@ -119,6 +119,7 @@ function Chars() {
         setLoading(false);
       })
       .catch((err) => {
+        setChars([]);
         setLoading(false);
       });
   }, []);

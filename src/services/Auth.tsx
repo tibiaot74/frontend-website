@@ -44,7 +44,7 @@ export async function login(data: ILogin) {
 export function authHeader(): AxiosRequestConfig {
   const user = UserSession.getToken() || "";
   if (user) {
-    return { headers: { authentication: user } };
+    return { headers: { Authorization: user } };
   } else {
     return {};
   }
