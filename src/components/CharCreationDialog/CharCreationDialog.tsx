@@ -1,30 +1,124 @@
 import {
   Button,
-  CircularProgress,
+  Checkbox,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
+  FormControlLabel,
   InputBase,
+  RadioGroup,
 } from "@mui/material";
-import Male from "../../assets/gifs/char_male.gif";
-import Female from "../../assets/gifs/char_female.gif";
 import { styled } from "@mui/system";
 import { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import BpRadio from "../BpRadio/BpRadio";
+import { creationOutfitOptions } from "./helper";
+import { getIcon, sexToString } from "../Char/helper";
 
-const StyledTitle = styled(DialogTitle)({
-  color: "white",
-  fontSize: 26,
-  fontFamily: "AncientModernTales-a7Po",
-  paddingBottom: 5,
-});
-
-const ContentDiv = styled("div")({
+const FormDiv = styled("form")({
   display: "flex",
   flexDirection: "column",
+});
+
+const ContainerDiv = styled("div")({
+  display: "flex",
+});
+
+const OutfitsContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  width: 200,
+});
+
+const CharContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  width: 300,
+  position: "relative",
+});
+
+const CheckboxForm = styled(FormControlLabel)({
+  position: "absolute",
+  top: 0,
+  left: 10,
+  color: "white",
+  ".MuiFormControlLabel-label": {
+    fontFamily: "AncientModernTales-a7Po",
+  },
+});
+
+const CharDisplay = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  border: "1px solid",
+  borderColor: "white",
   justifyContent: "center",
   alignContent: "center",
+  padding: 30,
+  paddingBottom: 20,
+  marginBottom: 15,
+});
+
+const CharDisplayContainer = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const CharInfoContainer = styled("div")({
+  display: "flex",
+  position: "relative",
+  justifyContent: "center",
+  border: "1px solid",
+  borderColor: "white",
+});
+
+const InfoText = styled("span")({
+  fontSize: 16,
+  color: "#d3d3d3",
+});
+
+const OutfitsText = styled("span")({
+  fontSize: 16,
+  color: "#d3d3d3",
+  marginBottom: 10,
+});
+
+const StyledRadioGroup = styled(RadioGroup)({
+  overflowY: "scroll",
+  paddingLeft: 10,
+  height: 200,
+  width: 150,
+  flexWrap: "unset",
+});
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  ".MuiFormControlLabel-label": {
+    color: "white",
+    fontFamily: "AncientModernTales-a7Po",
+  },
+});
+const ForwardArrow = styled(ArrowBackIosIcon)({
+  position: "absolute",
+  color: "white",
+  right: -18,
+  top: -3,
+  transform: "rotate(180deg)",
+  cursor: "pointer",
+});
+
+const BackwardArrow = styled(ArrowBackIosIcon)({
+  position: "absolute",
+  color: "white",
+  left: -18,
+  top: -3,
+  cursor: "pointer",
+});
+
+const Icon = styled("img")({
+  width: 60,
+  height: 60,
+  transform: "rotate(30deg)",
+  marginBottom: 30,
 });
 
 const FormInput = styled(InputBase)({
@@ -47,47 +141,12 @@ const FormInput = styled(InputBase)({
       borderColor: "white",
     },
   },
+  marginBottom: 10,
 });
 
-const GenderSelectDiv = styled("div")({
-  display: "flex",
-  position: "relative",
-  justifyContent: "center",
-  marginBottom: 30,
-});
-
-const ForwardArrow = styled(ArrowBackIosIcon)({
-  position: "absolute",
-  color: "white",
-  top: "50%",
-  right: "20%",
-  transform: "rotate(180deg)",
-  cursor: "pointer",
-});
-
-const BackwardArrow = styled(ArrowBackIosIcon)({
-  position: "absolute",
-  color: "white",
-  top: "50%",
-  left: "20%",
-  cursor: "pointer",
-});
-
-const GenderSelect = styled("img")({
-  width: 80,
-  height: 80,
-});
-
-const InputText = styled("span")({
-  fontFamily: "AncientModernTales-a7Po",
-
-  color: "white",
-  fontSize: 24,
-  padding: 12,
-  width: 85,
-});
-
-const CreateButton = styled(Button)({
+const NewCharButton = styled(Button)({
+  marginTop: 30,
+  width: "100%",
   boxShadow: "none",
   textTransform: "none",
   fontSize: 16,
@@ -113,14 +172,6 @@ const CreateButton = styled(Button)({
   },
 });
 
-const InputDiv = styled("div")({
-  display: "flex",
-});
-
-const Loading = styled(CircularProgress)({
-  color: "white",
-});
-
 function CharCreationDialog({
   open,
   loading,
@@ -128,41 +179,72 @@ function CharCreationDialog({
   submit,
 }: ICharCreationDialog) {
   const [name, setName] = useState("");
-  const [gender, setGender] = useState(Male);
+  const [sex, setSex] = useState(true);
+  const [outfit, setOutfit] = useState("Citzen");
+  const [animate, setAnimate] = useState(false);
 
   const changeGender = () => {
-    setGender(gender === Male ? Female : Male);
+    setSex(!sex);
   };
+
+  const icon = getIcon(sex, outfit.toLocaleLowerCase(), animate);
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <StyledTitle>Novo Char</StyledTitle>
       <DialogContent>
-        <ContentDiv>
-          <GenderSelectDiv>
-            <ForwardArrow onClick={changeGender} />
-            <BackwardArrow onClick={changeGender} />
-            <GenderSelect src={gender} />
-          </GenderSelectDiv>
-          <InputDiv>
-            <InputText>Nome:</InputText>
-            <FormInput
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </InputDiv>
-        </ContentDiv>
-      </DialogContent>
-      <DialogActions>
-        <CreateButton
-          disabled={loading}
-          onClick={() => {
-            submit({ name: name, sex: gender });
+        <FormDiv
+          onSubmit={() => {
+            submit({ name, sex, outfit });
           }}
         >
-          {loading ? <Loading size={24} /> : "Criar"}
-        </CreateButton>
-      </DialogActions>
+          <ContainerDiv>
+            <OutfitsContainer>
+              <OutfitsText>Outfits</OutfitsText>
+              <StyledRadioGroup>
+                {creationOutfitOptions.map((o) => (
+                  <StyledFormControlLabel
+                    value={o.toLowerCase()}
+                    control={<BpRadio />}
+                    label={o}
+                    color="white"
+                    onClick={(e) => setOutfit(o)}
+                    checked={outfit === o}
+                  />
+                ))}
+              </StyledRadioGroup>
+            </OutfitsContainer>
+            <CharContainer>
+              <CheckboxForm
+                control={
+                  <Checkbox
+                    value={animate}
+                    onChange={(e) => setAnimate(e.target.checked)}
+                  />
+                }
+                label="Animar"
+                labelPlacement="end"
+              />
+              <CharDisplay>
+                <CharDisplayContainer>
+                  <Icon src={icon} alt="character icon" />
+                </CharDisplayContainer>
+
+                <CharInfoContainer>
+                  <BackwardArrow onClick={changeGender} />
+                  <InfoText>{`${sexToString(sex)} ${outfit}`}</InfoText>
+                  <ForwardArrow onClick={changeGender} />
+                </CharInfoContainer>
+              </CharDisplay>
+              <FormInput
+                placeholder="Nome"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </CharContainer>
+          </ContainerDiv>
+          <NewCharButton>Criar</NewCharButton>
+        </FormDiv>
+      </DialogContent>
     </Dialog>
   );
 }
@@ -170,7 +252,15 @@ function CharCreationDialog({
 interface ICharCreationDialog {
   open: boolean;
   loading: boolean;
-  submit: ({ name, sex }: { name: string; sex: string }) => void;
+  submit: ({
+    name,
+    sex,
+    outfit,
+  }: {
+    name: string;
+    sex: boolean;
+    outfit: string;
+  }) => void;
   onClose: () => void;
 }
 

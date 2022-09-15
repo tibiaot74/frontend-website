@@ -2,6 +2,7 @@ import { styled } from "@mui/system";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
+import { getIcon } from "./helper";
 
 const borderColor = "#bf64f5";
 
@@ -12,7 +13,6 @@ const InnerCharContainer = styled("div")({
   justifyContent: "center",
   overflow: "hidden",
   alignItems: "center",
-  border: `2px solid ${borderColor}`,
   padding: 23,
 });
 
@@ -23,6 +23,12 @@ const OuterCharContainer = styled("div")({
   height: 150,
   padding: 5,
   border: `2px solid ${borderColor}`,
+  WebkitTransitionProperty: "all",
+  WebkitTransitionDuration: "0.3s",
+  WebkitTransitionTimingFunction: "ease",
+  "&:hover": {
+    transform: "scale(1.1)",
+  },
 });
 
 const NameText = styled("span")({
@@ -31,16 +37,16 @@ const NameText = styled("span")({
   marginBottom: 5,
 });
 
-const GenderText = styled("span")({
+const LevelText = styled("span")({
   color: "white",
-  fontSize: 16,
+  fontSize: 18,
 });
 
 const Icon = styled("img")({
   width: 45,
   height: 45,
   transform: "rotate(30deg)",
-  marginBottom: 10,
+  marginBottom: 20,
 });
 
 const MoreOptionsIcon = styled(IconButton)({
@@ -58,15 +64,8 @@ const MoreOptionsMenu = styled(Menu)({
   },
 });
 
-function Char({
-  name,
-  gender,
-  icon,
-}: {
-  name: string;
-  gender: "Male" | "Female";
-  icon: string;
-}) {
+function Char({ name, sex, level, outfit }: IChar) {
+  const [isHovered, setIsHovered] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(menuAnchor);
 
@@ -78,16 +77,25 @@ function Char({
     setMenuAnchor(event.currentTarget);
   };
 
+  const icon = getIcon(sex, outfit, isHovered);
+
   return (
     <>
-      <OuterCharContainer>
+      <OuterCharContainer
+        onMouseEnter={() => {
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+        }}
+      >
         <InnerCharContainer>
           <MoreOptionsIcon onClick={handleOpen}>
             <MoreVertIcon />
           </MoreOptionsIcon>
           <Icon src={icon} alt="character-icon" />
           <NameText>{name}</NameText>
-          <GenderText>{gender}</GenderText>
+          <LevelText>{level}</LevelText>
         </InnerCharContainer>
       </OuterCharContainer>
       <MoreOptionsMenu
@@ -100,6 +108,13 @@ function Char({
       </MoreOptionsMenu>
     </>
   );
+}
+
+interface IChar {
+  name: string;
+  sex: boolean;
+  level: number;
+  outfit: string;
 }
 
 export default Char;

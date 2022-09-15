@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# A tibia OT website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Português](/#português)
 
-## Available Scripts
+[English](/#english)
 
-In the project directory, you can run:
+# Português
 
-### `npm start`
+## Descrição
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Esse repositório faz parte de um projeto maior, de um server OT de Tibia. Esse código se refere a um website, que seria acoplado a esse projeto, para ser uma interface onde usuários veriam suas contas, status do jogo, conversar com outros jogadores, e diversos outros elementos externos ao jogo de fato mas que ampliam sua experiência no jogo e comunidade.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Ele foi escrito com react e typescript, e é open-source, significando que você pode `forkar` e fazer suas próprias mudanças.
 
-### `npm test`
+## Como rodar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Requisitos
 
-### `npm run build`
+- Node
+- Npm
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Comandos
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `npm install`
+- `npm start`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# English
 
-### `npm run eject`
+## Description
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This repo is part of a wider project, of a Tibia OT server. This code refers to a website, made to be run along the project, for a user friendly interface to see you account, game status, chat with other players, and many other external elements to the base game, that expand their game experience and community.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This code is written with react and typescript, and is open-source, meaning you can `fork` it and make your own changes.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## How to run
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Requirements
 
-## Learn More
+- Node
+- Npm
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Commands
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `npm install`
+- `npm start`

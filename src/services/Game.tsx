@@ -4,7 +4,8 @@ import { hostname } from "./config";
 
 interface ICreateChar {
   name: string;
-  sex: string;
+  sex: boolean;
+  outfit: string;
 }
 
 interface ICreateCharResponse {
@@ -14,10 +15,22 @@ interface ICreateCharResponse {
 }
 
 export async function createChar(data: ICreateChar) {
-  console.log(authHeader());
   const response = await axios.post<ICreateCharResponse>(
     `${hostname}/api/account/player`,
     data,
+    authHeader()
+  );
+
+  return await response;
+}
+
+export interface IGetCharsResponse {
+  players: Array<{ name: string; sex: boolean; level: number; outfit: string }>;
+}
+
+export async function getAccountChars() {
+  const response = await axios.get<IGetCharsResponse>(
+    `${hostname}/api/account/player`,
     authHeader()
   );
 

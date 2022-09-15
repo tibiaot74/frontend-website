@@ -1,12 +1,12 @@
-import { Divider, OutlinedInput, Button } from "@mui/material";
+import { Divider, OutlinedInput, Button, Skeleton } from "@mui/material";
 import { styled } from "@mui/system";
 import MainNavBar from "../../components/MainNavBar";
 import Char from "../../components/Char";
-import { useState } from "react";
-import { useChars } from "./hooks";
+import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CharCreationDialog from "../../components/CharCreationDialog";
-import { createChar } from "../../services/Game";
+import { createChar, getAccountChars } from "../../services/Game";
+import { defaultChars } from "./helper";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -19,7 +19,6 @@ const MainDiv = styled("div")({
   marginTop: 75,
   maxWidth: 1080,
   width: "100%",
-  overflow: "hidden",
 });
 
 const HeaderDiv = styled("div")({
@@ -28,6 +27,7 @@ const HeaderDiv = styled("div")({
   justifyContent: "flex-start",
   alignItems: "flex-start",
   marginBottom: 30,
+  overflow: "hidden",
 });
 
 const BodyDiv = styled("div")({
@@ -105,7 +105,23 @@ const NewCharButton = styled(Button)({
 });
 
 function Chars() {
-  const chars = useChars();
+  const [chars, setChars] =
+    useState<
+      Array<{ name: string; sex: boolean; level: number; outfit: string }>
+    >(defaultChars);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getAccountChars()
+      .then((response) => {
+        setChars(response.data.players);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
 
   const [searchText, setSearchText] = useState("");
   const [charCreationLoading, setCharCreationLoading] = useState(false);
@@ -123,7 +139,11 @@ function Chars() {
     setCharCreationDialogOpen(true);
   };
 
-  const createNewChar = (data: { name: string; sex: string }) => {
+  const createNewChar = (data: {
+    name: string;
+    sex: boolean;
+    outfit: string;
+  }) => {
     setCharCreationLoading(true);
     createChar(data)
       .then((response) => {
@@ -146,11 +166,21 @@ function Chars() {
           <CharSectionDiv>
             {chars
               .filter((char) => char.name.includes(searchText))
-              .map((char) => (
-                <CharContainer>
-                  <Char {...char} />
-                </CharContainer>
-              ))}
+              .map((char) => {
+                return (
+                  <CharContainer>
+                    {loading ? (
+                      <Skeleton
+                        variant="rectangular"
+                        width={150}
+                        height={150}
+                      />
+                    ) : (
+                      <Char {...char} />
+                    )}
+                  </CharContainer>
+                );
+              })}
           </CharSectionDiv>
           <OptionsSection>
             <SearchBarDiv>
