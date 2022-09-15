@@ -11,7 +11,7 @@ function Lougout() {
 
   useEffect(() => {
     navigate("/");
-  }, []);
+  }, [navigate]);
 
   return <></>;
 }

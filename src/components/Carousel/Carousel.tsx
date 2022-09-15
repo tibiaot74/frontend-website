@@ -33,12 +33,12 @@ function Carousel({ children }: Props) {
   useEffect(() => {
     const intervalId = setInterval(function () {
       setCurrentSlide(
-        (currentSlide - 1 + activeSlide.length) % activeSlide.length
+        (currentSlide) => (currentSlide - 1 + children.length) % children.length
       );
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [children.length]);
 
   const activeSlide = children.map((slide, index) => (
     <SCarouselSlide active={currentSlide === index} key={index}>
