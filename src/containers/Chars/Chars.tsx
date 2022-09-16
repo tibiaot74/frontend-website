@@ -142,6 +142,7 @@ function Chars() {
             level: 0,
           },
         ]);
+        setCharCreationDialogOpen(false);
       })
       .catch((err) => {
         setCharCreationLoading(true);
