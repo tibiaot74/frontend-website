@@ -94,6 +94,17 @@ const StyledRadioGroup = styled(RadioGroup)({
   height: 200,
   width: 150,
   flexWrap: "unset",
+  "&::-webkit-scrollbar": {
+    width: 3,
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#5c5c5c",
+    borderRadius: 10,
+  },
 });
 
 const StyledFormControlLabel = styled(FormControlLabel)({
