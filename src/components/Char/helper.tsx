@@ -34,7 +34,7 @@ export const outfitOptions = [
   "hunter",
   "knight",
   "mage",
-  "nobleman",
+  "noble",
   "summoner",
   "warrior",
 ];
