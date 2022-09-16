@@ -200,7 +200,7 @@ function CharCreationDialog({
         <FormDiv
           onSubmit={(e) => {
             e.preventDefault();
-            submit({ name, sex, outfit });
+            submit({ name: name, sex: sex, outfit: outfit.toLowerCase() });
           }}
         >
           <ContainerDiv>
