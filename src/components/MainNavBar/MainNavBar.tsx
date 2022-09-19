@@ -64,10 +64,13 @@ function MainNavBar() {
 
         <NavDiv>
           {mainNavigationOptions.map((option, i) => (
-            <Link key={`link-${i}`} to={option.url}>
-              <Title>{option.name}</Title>
+            <>
               {i !== 0 && <Divider>·</Divider>}
-            </Link>
+
+              <Link key={`link-${i}`} to={option.url}>
+                <Title>{option.name}</Title>
+              </Link>
+            </>
           ))}
         </NavDiv>
       </InnerDiv>
