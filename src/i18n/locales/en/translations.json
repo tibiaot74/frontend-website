@@ -6,7 +6,12 @@
       "account": "Account:",
       "accountPlaceholder":  "Only numbers",
       "password": "Password:",
-      "createButton": "Create"
+      "createButton": "Create",
+      "validation": {
+        "invalidEmail": "Type in a valid email",
+        "invalidPassword": "Passwords must have at least 8 characters, one lower case, one upper case and one digit",
+        "emptyName": "Account name cannot be empty"
+      }
     }
   },
   "login": {
@@ -14,7 +19,11 @@
       "title": "Login",
       "account": "Account:",
       "password": "Password:",
-      "loginButton": "Login"
+      "loginButton": "Login",
+      "validation": {
+        "emptyName": "Account name cannot be empty",
+        "emptyPassword": "Password cannot be empty"
+      }
     }
   },
   "chars": {
@@ -24,7 +33,10 @@
       "outfitsTitle": "Outfits",
       "animate": "Animate",
       "name": "Name",
-      "createButton": "Create"
+      "createButton": "Create",
+      "validation": {
+        "emptyName": "Name can't be empty"
+      }
     }
   },
   "mainNavBar": {

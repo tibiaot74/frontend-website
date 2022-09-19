@@ -9,12 +9,13 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import BpRadio from "../BpRadio/BpRadio";
 import { creationOutfitOptions } from "./helper";
 import { getIcon, sexToString } from "../Char/helper";
 import { useTranslation } from "react-i18next";
+import { isEmpty } from "../../helpers/string";
 
 const FormDiv = styled("form")({
   display: "flex",
@@ -189,6 +190,10 @@ const NewCharButton = styled(Button)({
   },
 });
 
+const ErrorText = styled("span")({
+  color: "#ed6242",
+});
+
 function CharCreationDialog({
   open,
   loading,
@@ -202,9 +207,43 @@ function CharCreationDialog({
   const [outfit, setOutfit] = useState("Citzen");
   const [animate, setAnimate] = useState(false);
 
+  const [validationErrors, setValidationErrors] = useState<{
+    emptyName?: string;
+  }>({});
+  const [submitFailed, setSubmitFailed] = useState(false);
+
   const changeGender = () => {
     setSex(!sex);
   };
+
+  const validate = ({ name }: { name: string }): boolean => {
+    var isValid: boolean = true;
+    setValidationErrors({});
+
+    if (isEmpty(name)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("chars.charCreationDialog.validation.emptyName"),
+      }));
+    }
+
+    return isValid;
+  };
+
+  useEffect(() => {
+    if (!isEmpty(name)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("chars.charCreationDialog.validation.emptyName"),
+      }));
+    }
+  }, [name, t]);
 
   const icon = getIcon(sex, outfit.toLocaleLowerCase(), animate);
 
@@ -214,6 +253,10 @@ function CharCreationDialog({
         <FormDiv
           onSubmit={(e) => {
             e.preventDefault();
+            if (!validate({ name })) {
+              setSubmitFailed(true);
+              return;
+            }
             submit({ name: name, sex: sex, outfit: outfit.toLowerCase() });
           }}
         >
@@ -265,6 +308,7 @@ function CharCreationDialog({
               />
             </CharContainer>
           </ContainerDiv>
+          {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
           <NewCharButton type="submit" disabled={loading}>
             {loading ? (
               <Loading size={24} />

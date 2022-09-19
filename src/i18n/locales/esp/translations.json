@@ -6,7 +6,12 @@
       "account": "Cuenta:",
       "accountPlaceholder":  "Sólo números",
       "password": "Senã:",
-      "createButton": "Crear"
+      "createButton": "Crear",
+      "validation": {
+        "invalidEmail": "Escriba un email válido",
+        "invalidPassword": "Senãs deben tener al menos 8 caracteres, una minúscula, una mayúscula y un dígito",
+        "emptyName": "Cuenta no puede estar vacío"
+      }
     }
   },
   "login": {
@@ -14,7 +19,11 @@
       "title": "Login",
       "account": "Cuenta:",
       "password": "Senã:",
-      "loginButton": "Login"
+      "loginButton": "Login",
+      "validation": {
+        "emptyName": "Cuenta no puede estar vacío",
+        "emptyPassword": "Senã de la cuenta no puede estar vacío"
+      }
     }
   },
   "chars": {
@@ -24,7 +33,10 @@
       "outfitsTitle": "Outfits",
       "animate": "Animar",
       "name": "Nombre",
-      "createButton": "Crear"
+      "createButton": "Crear",
+      "validation": {
+        "emptyName": "Nombre no puede estar vacío"
+      }
     }
   },
   "mainNavBar": {

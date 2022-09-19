@@ -9,7 +9,7 @@ function PrivateRoute({ children }: IPrivateRoute) {
     if (!UserSession.isLogged()) {
       return navigate("/");
     }
-  });
+  }, [navigate]);
 
   return children;
 }

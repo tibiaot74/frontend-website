@@ -207,7 +207,7 @@ function Chars() {
               />
             </SearchBarDiv>
             <NewCharButton variant="contained" onClick={dialogOpen}>
-              {t("chars.newChatButton")}
+              {t("chars.newCharButton")}
             </NewCharButton>
           </OptionsSection>
         </BodyDiv>

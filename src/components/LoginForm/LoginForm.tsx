@@ -2,10 +2,10 @@ import { styled } from "@mui/system";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "./helper";
-import { isEmpty, isNotParseable } from "./validations";
+import { isEmpty as isEmptyString } from "../../helpers/string";
 import { useTranslation } from "react-i18next";
 
 const ContainerDiv = styled("form")({
@@ -92,6 +92,10 @@ const ButtonDiv = styled("div")({
   justifyContent: "flex-end",
 });
 
+const ErrorText = styled("span")({
+  color: "#ed6242",
+});
+
 const Loading = styled(CircularProgress)({
   color: "white",
 });
@@ -104,6 +108,11 @@ function LoginForm() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    emptyName?: string;
+    emptyPassword?: string;
+  }>({});
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   const submit = (data: { name: number; password: string }) => {
     setLoading(true);
@@ -119,22 +128,65 @@ function LoginForm() {
     });
   };
 
-  const validate = (data: { name: string; password: string }) => {
-    if (isNotParseable(name)) {
+  const validate = ({
+    name,
+    password,
+  }: {
+    name: string;
+    password: string;
+  }): boolean => {
+    var isValid: boolean = true;
+    setValidationErrors({});
+
+    if (isEmptyString(name)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("login.loginForm.validation.emptyName"),
+      }));
     }
-    if (isEmpty(name)) {
-    }
-    if (isEmpty(password)) {
+    if (isEmptyString(password)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyPassword: t("login.loginForm.validation.emptyPassword"),
+      }));
     }
 
-    return false;
+    return isValid;
   };
+
+  useEffect(() => {
+    if (!isEmptyString(name)) {
+      setValidationErrors((errors) => ({ ...errors, emptyName: undefined }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("login.loginForm.validation.emptyName"),
+      }));
+    }
+  }, [name, t]);
+
+  useEffect(() => {
+    if (!isEmptyString(password)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyPassword: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("login.loginForm.validation.emptyPassword"),
+      }));
+    }
+  }, [password, t]);
 
   return (
     <ContainerDiv
       onSubmit={(e) => {
         e.preventDefault();
         if (!validate({ name, password })) {
+          setSubmitFailed(true);
           return;
         }
         const numberedName = parseInt(name);
@@ -146,17 +198,24 @@ function LoginForm() {
         <InputText>{t("login.loginForm.account")}</InputText>
         <FormInput
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          error={!!validationErrors?.emptyName}
+          placeholder={t("createAccount.createAccountForm.accountPlaceholder")}
+          onChange={(event) =>
+            setName(event.target.value.replace(/[^0-9]+/, ""))
+          }
         />
       </InputDiv>
+      {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
       <InputDiv>
         <InputText>{t("login.loginForm.password")}</InputText>
         <FormInput
           type="password"
           value={password}
+          error={!!validationErrors?.emptyPassword}
           onChange={(event) => setPassword(event.target.value)}
         />
       </InputDiv>
+      {submitFailed && <ErrorText>{validationErrors.emptyPassword}</ErrorText>}
 
       <ButtonDiv>
         <FormButton disabled={loading} type="submit">
