@@ -5,6 +5,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "./helper";
+import { isEmpty, isNotParseable } from "./validations";
+import { useTranslation } from "react-i18next";
 
 const ContainerDiv = styled("form")({
   backgroundColor: "#292e38",
@@ -33,7 +35,7 @@ const InputText = styled("span")({
   color: "white",
   fontSize: 24,
   padding: 12,
-  width: 85,
+  width: 115,
 });
 
 const FormInput = styled(InputBase)({
@@ -96,6 +98,8 @@ const Loading = styled(CircularProgress)({
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -115,24 +119,38 @@ function LoginForm() {
     });
   };
 
+  const validate = (data: { name: string; password: string }) => {
+    if (isNotParseable(name)) {
+    }
+    if (isEmpty(name)) {
+    }
+    if (isEmpty(password)) {
+    }
+
+    return false;
+  };
+
   return (
     <ContainerDiv
       onSubmit={(e) => {
         e.preventDefault();
+        if (!validate({ name, password })) {
+          return;
+        }
         const numberedName = parseInt(name);
         submit({ name: numberedName, password: password });
       }}
     >
-      <Title>Login</Title>
+      <Title>{t("login.loginForm.title")}</Title>
       <InputDiv>
-        <InputText>Conta:</InputText>
+        <InputText>{t("login.loginForm.account")}</InputText>
         <FormInput
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
       </InputDiv>
       <InputDiv>
-        <InputText>Senha:</InputText>
+        <InputText>{t("login.loginForm.password")}</InputText>
         <FormInput
           type="password"
           value={password}
@@ -142,7 +160,7 @@ function LoginForm() {
 
       <ButtonDiv>
         <FormButton disabled={loading} type="submit">
-          {loading ? <Loading size={24} /> : "Login"}
+          {loading ? <Loading size={24} /> : t("login.loginForm.loginButton")}
         </FormButton>
       </ButtonDiv>
     </ContainerDiv>

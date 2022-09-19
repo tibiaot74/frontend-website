@@ -1,1 +1,41 @@
-{}
+{
+  "createAccount": {
+    "createAccountForm": {
+      "title": "Criar conta",
+      "email": "Email",
+      "account": "Conta",
+      "accountPlaceholder":  "Apenas números",
+      "password": "Senha",
+      "createButton": "Criar"
+    }
+  },
+  "login": {
+    "loginForm": {
+      "title": "Login",
+      "account": "Conta:",
+      "password": "Senha:",
+      "loginButton": "Login"
+    }
+  },
+  "chars": {
+    "title": "Chars",
+    "newCharButton": "Novo Char",
+    "charCreationDialog": {
+      "outfitsTitle": "Outfits",
+      "animate": "Animar",
+      "name": "Nome",
+      "createButton": "Criar"
+    }
+  },
+  "mainNavBar": {
+    "title": "OT Tibia",
+    "authenticatedList": {
+      "logout": "Logout",
+      "chars": "Chars"
+    },
+    "unauthenticatedList":{
+      "login": "Login",
+      "createAccount": "Criar conta"
+    }
+  }
+}

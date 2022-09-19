@@ -1,8 +1,8 @@
 import { styled } from "@mui/system";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo_tibia.png";
 import UserSession from "../../services/UserSession";
-import { authenticatedList, unauhenticatedList } from "./helper";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -44,6 +44,21 @@ const Divider = styled(Title)({
 });
 
 function MainNavBar() {
+  const { t } = useTranslation();
+
+  const authenticatedList = [
+    { name: t("mainNavBar.authenticatedList.logout"), url: "/logout" },
+    { name: t("mainNavBar.authenticatedList.chars"), url: "/char" },
+  ];
+
+  const unauhenticatedList = [
+    { name: t("mainNavBar.unauthenticatedList.login"), url: "/login" },
+    {
+      name: t("mainNavBar.unauthenticatedList.createAccount"),
+      url: "/criar-conta",
+    },
+  ];
+
   const mainNavigationOptions = UserSession.isLogged()
     ? authenticatedList
     : unauhenticatedList;
@@ -58,7 +73,7 @@ function MainNavBar() {
             style={{ width: 36, height: 36, paddingRight: 14 }}
           />
           <Link to="/">
-            <Title>OT Tibia</Title>
+            <Title>{t("mainNavBar.title")}</Title>
           </Link>
         </LogoDiv>
 

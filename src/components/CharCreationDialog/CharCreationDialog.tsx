@@ -14,6 +14,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import BpRadio from "../BpRadio/BpRadio";
 import { creationOutfitOptions } from "./helper";
 import { getIcon, sexToString } from "../Char/helper";
+import { useTranslation } from "react-i18next";
 
 const FormDiv = styled("form")({
   display: "flex",
@@ -194,6 +195,8 @@ function CharCreationDialog({
   onClose,
   submit,
 }: ICharCreationDialog) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [sex, setSex] = useState(true);
   const [outfit, setOutfit] = useState("Citzen");
@@ -216,7 +219,9 @@ function CharCreationDialog({
         >
           <ContainerDiv>
             <OutfitsContainer>
-              <OutfitsText>Outfits</OutfitsText>
+              <OutfitsText>
+                {t("chars.charCreationDialog.outfitsTitle")}
+              </OutfitsText>
               <StyledRadioGroup>
                 {creationOutfitOptions.map((o) => (
                   <StyledFormControlLabel
@@ -239,7 +244,7 @@ function CharCreationDialog({
                     onChange={(e) => setAnimate(e.target.checked)}
                   />
                 }
-                label="Animar"
+                label={t("chars.charCreationDialog.animate")}
                 labelPlacement="end"
               />
               <CharDisplay>
@@ -254,14 +259,18 @@ function CharCreationDialog({
                 </CharInfoContainer>
               </CharDisplay>
               <FormInput
-                placeholder="Nome"
+                placeholder={t("chars.charCreationDialog.name")}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </CharContainer>
           </ContainerDiv>
           <NewCharButton type="submit" disabled={loading}>
-            {loading ? <Loading size={24} /> : "Criar"}
+            {loading ? (
+              <Loading size={24} />
+            ) : (
+              t("chars.charCreationDialog.createButton")
+            )}
           </NewCharButton>
         </FormDiv>
       </DialogContent>

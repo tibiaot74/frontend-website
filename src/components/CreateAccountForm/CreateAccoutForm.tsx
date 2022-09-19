@@ -6,6 +6,7 @@ import { useState } from "react";
 import { createAccount } from "../../services/Auth";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "../LoginForm/helper";
+import { useTranslation } from "react-i18next";
 
 const ContainerDiv = styled("form")({
   backgroundColor: "#292e38",
@@ -34,7 +35,7 @@ const InputText = styled("span")({
   color: "white",
   fontSize: 24,
   padding: 12,
-  width: 85,
+  width: 115,
 });
 
 const FormInput = styled(InputBase)({
@@ -97,6 +98,8 @@ const Loading = styled(CircularProgress)({
 
 function CreateAccountForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -129,26 +132,26 @@ function CreateAccountForm() {
         submit({ email: email, name: numberedName, password: password });
       }}
     >
-      <Title>Crie sua conta</Title>
+      <Title>{t("createAccount.createAccountForm.title")}</Title>
       <InputDiv>
-        <InputText>Email:</InputText>
+        <InputText>{t("createAccount.createAccountForm.email")}</InputText>
         <FormInput
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </InputDiv>
       <InputDiv>
-        <InputText>Conta: </InputText>
+        <InputText>{t("createAccount.createAccountForm.account")}</InputText>
         <FormInput
           value={name}
-          placeholder={"Apenas números"}
+          placeholder={t("createAccount.createAccountForm.accountPlaceholder")}
           onChange={(event) =>
             setName(event.target.value.replace(/[^0-9]+/, ""))
           }
         />
       </InputDiv>
       <InputDiv>
-        <InputText>Senha:</InputText>
+        <InputText>{t("createAccount.createAccountForm.password")}</InputText>
         <FormInput
           type="password"
           value={password}
@@ -158,7 +161,11 @@ function CreateAccountForm() {
 
       <ButtonDiv>
         <FormButton disabled={loading} type="submit">
-          {loading ? <Loading size={24} /> : "Criar"}
+          {loading ? (
+            <Loading size={24} />
+          ) : (
+            t("createAccount.createAccountForm.createButton")
+          )}
         </FormButton>
       </ButtonDiv>
     </ContainerDiv>

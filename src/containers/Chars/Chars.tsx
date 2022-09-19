@@ -7,6 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CharCreationDialog from "../../components/CharCreationDialog";
 import { createChar, getAccountChars } from "../../services/Game";
 import { defaultChars } from "./helper";
+import { useTranslation } from "react-i18next";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -105,6 +106,8 @@ const NewCharButton = styled(Button)({
 });
 
 function Chars() {
+  const { t } = useTranslation();
+
   const [chars, setChars] =
     useState<
       Array<{ name: string; sex: boolean; level: number; outfit: string }>
@@ -170,7 +173,7 @@ function Chars() {
       <MainNavBar />
       <MainDiv>
         <HeaderDiv>
-          <HeaderText>Chars</HeaderText>
+          <HeaderText>{t("chars.title")}</HeaderText>
           <StyledDivider />
         </HeaderDiv>
         <BodyDiv>
@@ -204,7 +207,7 @@ function Chars() {
               />
             </SearchBarDiv>
             <NewCharButton variant="contained" onClick={dialogOpen}>
-              Novo Char
+              {t("chars.newChatButton")}
             </NewCharButton>
           </OptionsSection>
         </BodyDiv>
