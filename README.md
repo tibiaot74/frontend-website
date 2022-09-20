@@ -1,8 +1,8 @@
 # A tibia OT website
 
-[Português](/#português)
+[Português](#português)
 
-[English](/#english)
+[English](#english)
 
 # Português
 
