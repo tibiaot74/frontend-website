@@ -3,7 +3,7 @@ export const creationOutfitOptions = [
   "Mage",
   "Knight",
   "Citzen",
-  "Nobleman",
+  "Noble",
   "Warrior",
   "Summoner",
 ];

@@ -9,11 +9,13 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import BpRadio from "../BpRadio/BpRadio";
 import { creationOutfitOptions } from "./helper";
 import { getIcon, sexToString } from "../Char/helper";
+import { useTranslation } from "react-i18next";
+import { isEmpty } from "../../helpers/string";
 
 const FormDiv = styled("form")({
   display: "flex",
@@ -94,6 +96,17 @@ const StyledRadioGroup = styled(RadioGroup)({
   height: 200,
   width: 150,
   flexWrap: "unset",
+  "&::-webkit-scrollbar": {
+    width: 3,
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
+    borderRadius: 10,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#5c5c5c",
+    borderRadius: 10,
+  },
 });
 
 const StyledFormControlLabel = styled(FormControlLabel)({
@@ -177,20 +190,60 @@ const NewCharButton = styled(Button)({
   },
 });
 
+const ErrorText = styled("span")({
+  color: "#ed6242",
+});
+
 function CharCreationDialog({
   open,
   loading,
   onClose,
   submit,
 }: ICharCreationDialog) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [sex, setSex] = useState(true);
   const [outfit, setOutfit] = useState("Citzen");
   const [animate, setAnimate] = useState(false);
 
+  const [validationErrors, setValidationErrors] = useState<{
+    emptyName?: string;
+  }>({});
+  const [submitFailed, setSubmitFailed] = useState(false);
+
   const changeGender = () => {
     setSex(!sex);
   };
+
+  const validate = ({ name }: { name: string }): boolean => {
+    var isValid: boolean = true;
+    setValidationErrors({});
+
+    if (isEmpty(name)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("chars.charCreationDialog.validation.emptyName"),
+      }));
+    }
+
+    return isValid;
+  };
+
+  useEffect(() => {
+    if (!isEmpty(name)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("chars.charCreationDialog.validation.emptyName"),
+      }));
+    }
+  }, [name, t]);
 
   const icon = getIcon(sex, outfit.toLocaleLowerCase(), animate);
 
@@ -200,12 +253,18 @@ function CharCreationDialog({
         <FormDiv
           onSubmit={(e) => {
             e.preventDefault();
-            submit({ name, sex, outfit });
+            if (!validate({ name })) {
+              setSubmitFailed(true);
+              return;
+            }
+            submit({ name: name, sex: sex, outfit: outfit.toLowerCase() });
           }}
         >
           <ContainerDiv>
             <OutfitsContainer>
-              <OutfitsText>Outfits</OutfitsText>
+              <OutfitsText>
+                {t("chars.charCreationDialog.outfitsTitle")}
+              </OutfitsText>
               <StyledRadioGroup>
                 {creationOutfitOptions.map((o) => (
                   <StyledFormControlLabel
@@ -228,7 +287,7 @@ function CharCreationDialog({
                     onChange={(e) => setAnimate(e.target.checked)}
                   />
                 }
-                label="Animar"
+                label={t("chars.charCreationDialog.animate")}
                 labelPlacement="end"
               />
               <CharDisplay>
@@ -243,14 +302,19 @@ function CharCreationDialog({
                 </CharInfoContainer>
               </CharDisplay>
               <FormInput
-                placeholder="Nome"
+                placeholder={t("chars.charCreationDialog.name")}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </CharContainer>
           </ContainerDiv>
+          {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
           <NewCharButton type="submit" disabled={loading}>
-            {loading ? <Loading size={24} /> : "Criar"}
+            {loading ? (
+              <Loading size={24} />
+            ) : (
+              t("chars.charCreationDialog.createButton")
+            )}
           </NewCharButton>
         </FormDiv>
       </DialogContent>

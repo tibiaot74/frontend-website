@@ -7,6 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CharCreationDialog from "../../components/CharCreationDialog";
 import { createChar, getAccountChars } from "../../services/Game";
 import { defaultChars } from "./helper";
+import { useTranslation } from "react-i18next";
 
 const ContainerDiv = styled("div")({
   display: "flex",
@@ -105,11 +106,13 @@ const NewCharButton = styled(Button)({
 });
 
 function Chars() {
+  const { t } = useTranslation();
+
   const [chars, setChars] =
     useState<
       Array<{ name: string; sex: boolean; level: number; outfit: string }>
     >(defaultChars);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -123,6 +126,31 @@ function Chars() {
         setLoading(false);
       });
   }, []);
+
+  const createNewChar = (data: {
+    name: string;
+    sex: boolean;
+    outfit: string;
+  }) => {
+    setCharCreationLoading(true);
+    createChar(data)
+      .then((response) => {
+        setCharCreationLoading(false);
+        setChars([
+          ...chars,
+          {
+            name: response.data.name,
+            sex: response.data.sex,
+            outfit: response.data.outfit,
+            level: 0,
+          },
+        ]);
+        setCharCreationDialogOpen(false);
+      })
+      .catch((err) => {
+        setCharCreationLoading(true);
+      });
+  };
 
   const [searchText, setSearchText] = useState("");
   const [charCreationLoading, setCharCreationLoading] = useState(false);
@@ -140,27 +168,12 @@ function Chars() {
     setCharCreationDialogOpen(true);
   };
 
-  const createNewChar = (data: {
-    name: string;
-    sex: boolean;
-    outfit: string;
-  }) => {
-    setCharCreationLoading(true);
-    createChar(data)
-      .then((response) => {
-        setCharCreationLoading(false);
-      })
-      .catch((err) => {
-        setCharCreationLoading(true);
-      });
-  };
-
   return (
     <ContainerDiv>
       <MainNavBar />
       <MainDiv>
         <HeaderDiv>
-          <HeaderText>Chars</HeaderText>
+          <HeaderText>{t("chars.title")}</HeaderText>
           <StyledDivider />
         </HeaderDiv>
         <BodyDiv>
@@ -194,7 +207,7 @@ function Chars() {
               />
             </SearchBarDiv>
             <NewCharButton variant="contained" onClick={dialogOpen}>
-              Novo Char
+              {t("chars.newCharButton")}
             </NewCharButton>
           </OptionsSection>
         </BodyDiv>

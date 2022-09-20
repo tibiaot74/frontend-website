@@ -4,6 +4,7 @@ import Chars from "../containers/Chars";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
 import Lougout from "../containers/Logout";
+import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
   return (
@@ -12,7 +13,14 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Lougout />} />
         <Route path="/criar-conta" element={<CreateAccount />} />
-        <Route path="/char" element={<Chars />} />
+        <Route
+          path="/char"
+          element={
+            <PrivateRoute>
+              <Chars />
+            </PrivateRoute>
+          }
+        />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>

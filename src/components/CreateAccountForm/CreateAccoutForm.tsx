@@ -2,10 +2,13 @@ import { styled } from "@mui/system";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createAccount } from "../../services/Auth";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "../LoginForm/helper";
+import { useTranslation } from "react-i18next";
+import { validEmail, validPassword } from "./validations";
+import { isEmpty } from "../../helpers/string";
 
 const ContainerDiv = styled("form")({
   backgroundColor: "#292e38",
@@ -34,7 +37,7 @@ const InputText = styled("span")({
   color: "white",
   fontSize: 24,
   padding: 12,
-  width: 85,
+  width: 115,
 });
 
 const FormInput = styled(InputBase)({
@@ -91,17 +94,29 @@ const ButtonDiv = styled("div")({
   justifyContent: "flex-end",
 });
 
+const ErrorText = styled("span")({
+  color: "#ed6242",
+});
+
 const Loading = styled(CircularProgress)({
   color: "white",
 });
 
 function CreateAccountForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    invalidEmail?: string;
+    invalidPassword?: string;
+    emptyName?: string;
+  }>({});
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   const submit = (data: { email: string; name: number; password: string }) => {
     setLoading(true);
@@ -121,44 +136,145 @@ function CreateAccountForm() {
       });
   };
 
+  const validate = ({
+    email,
+    name,
+    password,
+  }: {
+    email: string;
+    name: string;
+    password: string;
+  }): boolean => {
+    var isValid: boolean = true;
+    setValidationErrors({});
+
+    if (!validEmail(email)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidEmail: t(
+          "createAccount.createAccountForm.validation.invalidEmail"
+        ),
+      }));
+    }
+    if (isEmpty(name)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("createAccount.createAccountForm.validation.emptyName"),
+      }));
+    }
+    if (!validPassword(password)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidPassword: t(
+          "createAccount.createAccountForm.validation.invalidPassword"
+        ),
+      }));
+    }
+
+    return isValid;
+  };
+
+  useEffect(() => {
+    if (validEmail(email)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidEmail: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidEmail: t(
+          "createAccount.createAccountForm.validation.invalidEmail"
+        ),
+      }));
+    }
+  }, [email, t]);
+
+  useEffect(() => {
+    if (!isEmpty(name)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        emptyName: t("createAccount.createAccountForm.validation.emptyName"),
+      }));
+    }
+  }, [name, t]);
+
+  useEffect(() => {
+    if (validPassword(password)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidPassword: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        invalidPassword: t(
+          "createAccount.createAccountForm.validation.invalidPassword"
+        ),
+      }));
+    }
+  }, [password, t]);
+
   return (
     <ContainerDiv
       onSubmit={(e) => {
         e.preventDefault();
+        if (!validate({ email, name, password })) {
+          setSubmitFailed(true);
+          return;
+        }
         const numberedName = parseInt(name);
         submit({ email: email, name: numberedName, password: password });
       }}
     >
-      <Title>Crie sua conta</Title>
+      <Title>{t("createAccount.createAccountForm.title")}</Title>
       <InputDiv>
-        <InputText>Email:</InputText>
+        <InputText>{t("createAccount.createAccountForm.email")}</InputText>
         <FormInput
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </InputDiv>
+      {submitFailed && <ErrorText>{validationErrors.invalidEmail}</ErrorText>}
       <InputDiv>
-        <InputText>Conta: </InputText>
+        <InputText>{t("createAccount.createAccountForm.account")}</InputText>
         <FormInput
           value={name}
-          placeholder={"Apenas números"}
+          placeholder={t("createAccount.createAccountForm.accountPlaceholder")}
           onChange={(event) =>
             setName(event.target.value.replace(/[^0-9]+/, ""))
           }
         />
       </InputDiv>
+      {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
+
       <InputDiv>
-        <InputText>Senha:</InputText>
+        <InputText>{t("createAccount.createAccountForm.password")}</InputText>
         <FormInput
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
       </InputDiv>
+      {submitFailed && (
+        <ErrorText>{validationErrors.invalidPassword}</ErrorText>
+      )}
 
       <ButtonDiv>
         <FormButton disabled={loading} type="submit">
-          {loading ? <Loading size={24} /> : "Criar"}
+          {loading ? (
+            <Loading size={24} />
+          ) : (
+            t("createAccount.createAccountForm.createButton")
+          )}
         </FormButton>
       </ButtonDiv>
     </ContainerDiv>

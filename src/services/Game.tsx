@@ -11,7 +11,8 @@ interface ICreateChar {
 interface ICreateCharResponse {
   id: number;
   name: string;
-  sex: string;
+  sex: boolean;
+  outfit: string;
 }
 
 export async function createChar(data: ICreateChar) {
