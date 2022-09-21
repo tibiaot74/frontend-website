@@ -1,1 +1,1 @@
-export const hostname = "http://localhost:7474";
+export const hostname = process.env.REACT_APP_API_URL;
