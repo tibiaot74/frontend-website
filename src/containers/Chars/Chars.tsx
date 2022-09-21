@@ -142,7 +142,7 @@ function Chars() {
             name: response.data.name,
             sex: response.data.sex,
             outfit: response.data.outfit,
-            level: 0,
+            level: 1,
           },
         ]);
         setCharCreationDialogOpen(false);
