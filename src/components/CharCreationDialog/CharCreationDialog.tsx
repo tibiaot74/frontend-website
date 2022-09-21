@@ -223,6 +223,15 @@ function CharCreationDialog({
   }>({});
   const [submitFailed, setSubmitFailed] = useState(false);
 
+  const resetState = () => {
+    setName("");
+    setSex(true);
+    setOutfit("Citzen");
+    setAnimate(false);
+    setValidationErrors({});
+    setSubmitFailed(false);
+  };
+
   const changeGender = () => {
     setSex(!sex);
   };
@@ -259,7 +268,13 @@ function CharCreationDialog({
   const icon = getIcon(sex, outfit.toLocaleLowerCase(), animate);
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={() => {
+        resetState();
+        onClose();
+      }}
+    >
       <DialogContent>
         <FormDiv
           onSubmit={(e) => {
@@ -268,6 +283,7 @@ function CharCreationDialog({
               setSubmitFailed(true);
               return;
             }
+            resetState();
             submit({ name: name, sex: sex, outfit: outfit.toLowerCase() });
           }}
         >
@@ -316,11 +332,12 @@ function CharCreationDialog({
                 placeholder={t("chars.charCreationDialog.name")}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                inputProps={{ maxLength: 14 }}
               />
             </CharContainer>
           </ContainerDiv>
           {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
-          <NewCharButton type="submit" disabled={loading}>
+          <NewCharButton type="submit" disabled={loading || name.length < 4}>
             {loading ? (
               <Loading size={24} />
             ) : (

@@ -10,7 +10,8 @@
       "validation": {
         "invalidEmail": "Type in a valid email",
         "invalidPassword": "Passwords must have at least 8 characters, one lower case, one upper case and one digit",
-        "emptyName": "Account name cannot be empty"
+        "emptyName": "Account name cannot be empty",
+        "nameTooShort": "Account name must have between 6 to 10 characters"
       }
     }
   },

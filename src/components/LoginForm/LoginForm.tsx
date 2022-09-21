@@ -203,6 +203,7 @@ function LoginForm() {
           onChange={(event) =>
             setName(event.target.value.replace(/[^0-9]+/, ""))
           }
+          inputProps={{ maxLength: 10 }}
         />
       </InputDiv>
       {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
@@ -213,6 +214,7 @@ function LoginForm() {
           value={password}
           error={!!validationErrors?.emptyPassword}
           onChange={(event) => setPassword(event.target.value)}
+          inputProps={{ maxLength: 40 }}
         />
       </InputDiv>
       {submitFailed && <ErrorText>{validationErrors.emptyPassword}</ErrorText>}

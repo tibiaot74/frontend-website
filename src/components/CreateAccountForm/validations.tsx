@@ -3,5 +3,9 @@ export const validEmail = (email: string): boolean => {
 };
 
 export const validPassword = (password: string): boolean => {
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(password);
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,40})/.test(password);
+};
+
+export const nameIsLongEnough = (name: string): boolean => {
+  return name.length >= 6;
 };

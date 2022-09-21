@@ -10,7 +10,8 @@
       "validation": {
         "invalidEmail": "Escriba un email válido",
         "invalidPassword": "Senãs deben tener al menos 8 caracteres, una minúscula, una mayúscula y un dígito",
-        "emptyName": "Cuenta no puede estar vacío"
+        "emptyName": "Cuenta no puede estar vacío",
+        "nameTooShort": "Cuenta debe tener entre 6 y 10 caracteres"
       }
     }
   },

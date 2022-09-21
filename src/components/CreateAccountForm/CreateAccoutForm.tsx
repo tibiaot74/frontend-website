@@ -7,7 +7,7 @@ import { createAccount } from "../../services/Auth";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "../LoginForm/helper";
 import { useTranslation } from "react-i18next";
-import { validEmail, validPassword } from "./validations";
+import { nameIsLongEnough, validEmail, validPassword } from "./validations";
 import { isEmpty } from "../../helpers/string";
 
 const ContainerDiv = styled("form")({
@@ -115,6 +115,7 @@ function CreateAccountForm() {
     invalidEmail?: string;
     invalidPassword?: string;
     emptyName?: string;
+    nameTooShort?: string;
   }>({});
   const [submitFailed, setSubmitFailed] = useState(false);
 
@@ -164,6 +165,16 @@ function CreateAccountForm() {
         emptyName: t("createAccount.createAccountForm.validation.emptyName"),
       }));
     }
+    if (!nameIsLongEnough(name)) {
+      isValid = false;
+      setValidationErrors((errors) => ({
+        ...errors,
+        nameTooShort: t(
+          "createAccount.createAccountForm.validation.nameTooShort"
+        ),
+      }));
+    }
+
     if (!validPassword(password)) {
       isValid = false;
       setValidationErrors((errors) => ({
@@ -203,6 +214,20 @@ function CreateAccountForm() {
       setValidationErrors((errors) => ({
         ...errors,
         emptyName: t("createAccount.createAccountForm.validation.emptyName"),
+      }));
+    }
+
+    if (nameIsLongEnough(name)) {
+      setValidationErrors((errors) => ({
+        ...errors,
+        nameTooShort: undefined,
+      }));
+    } else {
+      setValidationErrors((errors) => ({
+        ...errors,
+        nameTooShort: t(
+          "createAccount.createAccountForm.validation.nameTooShort"
+        ),
       }));
     }
   }, [name, t]);
@@ -252,9 +277,11 @@ function CreateAccountForm() {
           onChange={(event) =>
             setName(event.target.value.replace(/[^0-9]+/, ""))
           }
+          inputProps={{ maxLength: 10 }}
         />
       </InputDiv>
       {submitFailed && <ErrorText>{validationErrors.emptyName}</ErrorText>}
+      {submitFailed && <ErrorText>{validationErrors.nameTooShort}</ErrorText>}
 
       <InputDiv>
         <InputText>{t("createAccount.createAccountForm.password")}</InputText>
@@ -262,6 +289,7 @@ function CreateAccountForm() {
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+          inputProps={{ maxLength: 40 }}
         />
       </InputDiv>
       {submitFailed && (
