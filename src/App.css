@@ -3,6 +3,12 @@
   src: local('AncientModernTales-a7Po'), url("./fonts/ancient-modern-tales-font/AncientModernTales-a7Po.ttf") format("truetype")
 }
 
+@font-face {
+  font-family: 'AdventureRequest-j8W9';
+  src: local('AdventureRequest-j8W9'), url("./fonts/adventure-request-font/AdventureRequest-j8W9.ttf") format("truetype")
+}
+
+
 .App {
   background-color: #181c23;
   background-image: url('assets/images/bg-top.png');

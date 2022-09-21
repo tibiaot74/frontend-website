@@ -80,16 +80,16 @@ const SearchBar = styled(OutlinedInput)({
 });
 
 const NewCharButton = styled(Button)({
+  fontFamily: "AdventureRequest-j8W9",
   boxShadow: "none",
   textTransform: "none",
-  fontSize: 16,
+  fontSize: 14,
   padding: "6px 12px",
   border: "1px solid",
   lineHeight: 1.5,
   backgroundColor: "#2b2b2b",
   borderColor: "white",
   color: "white",
-  fontFamily: "AncientModernTales-a7Po",
   "&:hover": {
     backgroundColor: "#171717",
     borderColor: "#f2f2f2",

@@ -45,7 +45,14 @@ const CheckboxForm = styled(FormControlLabel)({
   left: 10,
   color: "white",
   ".MuiFormControlLabel-label": {
-    fontFamily: "AncientModernTales-a7Po",
+    fontFamily: "AdventureRequest-j8W9",
+    fontSize: 12,
+  },
+  ".MuiCheckbox-root": {
+    color: "white",
+  },
+  ".Mui-checked": {
+    color: "white !important",
   },
 });
 
@@ -80,11 +87,14 @@ const CharInfoContainer = styled("div")({
 });
 
 const InfoText = styled("span")({
-  fontSize: 16,
+  fontFamily: "AdventureRequest-j8W9",
+  fontSize: 14,
   color: "#d3d3d3",
+  padding: 5,
 });
 
 const OutfitsText = styled("span")({
+  fontFamily: "AdventureRequest-j8W9",
   fontSize: 16,
   color: "#d3d3d3",
   marginBottom: 10,
@@ -112,14 +122,15 @@ const StyledRadioGroup = styled(RadioGroup)({
 const StyledFormControlLabel = styled(FormControlLabel)({
   ".MuiFormControlLabel-label": {
     color: "white",
-    fontFamily: "AncientModernTales-a7Po",
+    fontFamily: "AdventureRequest-j8W9",
+    fontSize: 12,
   },
 });
 const ForwardArrow = styled(ArrowBackIosIcon)({
   position: "absolute",
   color: "white",
   right: -18,
-  top: -3,
+  top: 3,
   transform: "rotate(180deg)",
   cursor: "pointer",
 });
@@ -128,7 +139,7 @@ const BackwardArrow = styled(ArrowBackIosIcon)({
   position: "absolute",
   color: "white",
   left: -18,
-  top: -3,
+  top: 3,
   cursor: "pointer",
 });
 
@@ -149,11 +160,11 @@ const FormInput = styled(InputBase)({
     position: "relative",
     backgroundColor: "#2b2b2b",
     border: "1px solid #ced4da",
-    fontSize: 20,
+    fontSize: 16,
     width: "100%",
     padding: "10px 12px",
     color: "white",
-    fontFamily: "AncientModernTales-a7Po",
+    fontFamily: "AdventureRequest-j8W9",
     "&:focus": {
       boxShadow: `0 0 0 0.2rem`,
       borderColor: "white",
@@ -174,7 +185,7 @@ const NewCharButton = styled(Button)({
   backgroundColor: "#2b2b2b",
   borderColor: "white",
   color: "white",
-  fontFamily: "AncientModernTales-a7Po",
+  fontFamily: "AdventureRequest-j8W9",
   "&:hover": {
     backgroundColor: "#171717",
     borderColor: "#f2f2f2",

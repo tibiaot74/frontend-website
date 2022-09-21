@@ -25,8 +25,9 @@ const BodyDiv = styled("div")({
 });
 
 const Body = styled("span")({
-  color: "#7c0bbd",
-  fontSize: 24,
+  fontFamily: "AdventureRequest-j8W9",
+  color: "#bf64f5;",
+  fontSize: 16,
 });
 
 function InfoCard({ image, title, body }: Props) {

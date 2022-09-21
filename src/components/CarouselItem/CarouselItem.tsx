@@ -30,8 +30,9 @@ const Header = styled("span")({
 });
 
 const Paragraph = styled("p")({
+  fontFamily: "AdventureRequest-j8W9",
   color: "white",
-  fontSize: 18,
+  fontSize: 14,
 });
 
 function CarouselItem({ header, paragraph, image }: Props) {
