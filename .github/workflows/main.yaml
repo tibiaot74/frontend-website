@@ -26,3 +26,4 @@ jobs:
           docker image tag frontend-website ${{ secrets.DOCKER_USERNAME }}/frontend-website:$IMAGE_TAG
           docker push ${{ secrets.DOCKER_USERNAME}}/frontend-website:$IMAGE_TAG
           docker image tag frontend-website ${{ secrets.DOCKER_USERNAME }}/frontend-website:latest
+          docker push ${{ secrets.DOCKER_USERNAME}}/frontend-website:latest
