@@ -78,6 +78,13 @@ function MainNavBar() {
         </LogoDiv>
 
         <NavDiv>
+          <a
+            href="https://drive.google.com/drive/u/0/folders/1AjTqGAMcAeCdVREJhOlSmYuc_KQaEEal"
+            target="blank"
+          >
+            <Title>{t("mainNavBar.sharedList.download")}</Title>
+          </a>
+          <Divider>·</Divider>
           {mainNavigationOptions.map((option, i) => (
             <>
               {i !== 0 && <Divider>·</Divider>}

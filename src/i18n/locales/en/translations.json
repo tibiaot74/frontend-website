@@ -49,6 +49,9 @@
     "unauthenticatedList":{
       "login": "Login",
       "createAccount": "Create Account"
+    },
+    "sharedList": {
+      "download": "Download"
     }
   }
 }
